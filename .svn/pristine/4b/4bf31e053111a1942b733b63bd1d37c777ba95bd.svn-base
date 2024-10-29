@@ -1,0 +1,63 @@
+package de.uniwue.gdp.crypto.basic;
+
+import de.uniwue.gdp.crypto.Encryptor;
+
+public class NeighborEncryptor implements Encryptor {
+    @Override
+    public String encode(String input) {
+        String temp = "";
+        int firstChar;
+        int secondChar;
+        int sum;
+        ///Das letzte Char muss noch danach hinzugefügt werden
+        for(int i = 0; i<input.length()-1; i++){
+            if(input.charAt(i) == ' '){
+                temp += ' ';
+                continue;
+            }
+            firstChar = (int) input.charAt(i) -65;
+            secondChar = (int) input.charAt(i+1) - 65;
+            sum = firstChar + secondChar;
+            if(sum>26){
+                sum -= 26;
+            }
+            temp += (char) (sum + 65);
+        }
+        //letztes Char hinzufügen
+        temp += input.charAt(input.length()-1);
+        return temp;
+    }
+
+    @Override
+    public String decode(String input) {
+        String temp = "";
+        int firstChar;
+        int secondChar;
+        int sum;
+        int z = 0;
+        temp += input.charAt(input.length()-1);
+        for(int i = input.length()-2; i>=0;i--){
+            firstChar = (int) temp.charAt(z) -65;
+            secondChar = (int) input.charAt(i) - 65;
+            sum = secondChar - firstChar;
+            if(sum<0){
+                sum += 26;
+            }
+            z++;
+            temp += (char) (sum + 65);
+        }
+
+        String reverstemp = "";
+        for(int i = temp.length()-1; i>=0;i--)
+            reverstemp = reverstemp + temp.charAt(i);
+
+
+
+        return reverstemp;
+    }
+
+    @Override
+    public String key() {
+        return "NEI";
+    }
+}

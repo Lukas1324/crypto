@@ -1,0 +1,52 @@
+package de.uniwue.gdp.crypto.basic;
+
+import de.uniwue.gdp.crypto.Encryptor;
+
+public class ShiftEncryptor implements Encryptor {
+    int offset;
+    public ShiftEncryptor(int offset){
+        this.offset = offset;
+    }
+    @Override
+    public String encode(String input) {
+        ///Leerzeichen nicht berücksichtigt
+        String temp = "";
+        int valueChar;
+        for(int i = 0; i<input.length();i++){
+            if(input.charAt(i) == ' '){
+                temp += ' ';
+                continue;
+            }
+            valueChar = (int) input.charAt(i) + offset;
+            if (valueChar>90){
+                valueChar = valueChar - 25;
+            }
+            temp += (char) valueChar;
+        }
+        return temp;
+    }
+
+    @Override
+    public String decode(String input) {
+        String temp = "";
+        int valueChar;
+        for(int i = 0; i<input.length(); i++) {
+            if (input.charAt(i) == ' ') {
+                temp += ' ';
+                continue;
+            }
+            valueChar = (int) input.charAt(i) - offset;
+            if (valueChar < 65) {
+                valueChar = valueChar + 25;
+            }
+            temp += (char) valueChar;
+        }
+        return temp;
+    }
+
+
+    @Override
+    public String key() {
+        return "SFT" + offset;
+    }
+}

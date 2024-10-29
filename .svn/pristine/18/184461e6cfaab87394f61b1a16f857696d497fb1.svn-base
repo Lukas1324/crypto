@@ -1,0 +1,24 @@
+package de.uniwue.gdp.crypto;
+
+/*
+import de.uniwue.gdp.crypto.basic.NeighborEncryptor;
+import de.uniwue.gdp.crypto.basic.RevertEncryptor;
+import de.uniwue.gdp.crypto.basic.ShiftEncryptor;
+*/
+
+public class Main {
+    public static void main(String[] args) {
+        String test = "HAUS";
+        System.out.println("Testsatz: " + test);
+        /*
+        RevertEncryptor re = new RevertEncryptor();
+        System.out.println("Revert: " + re.encode(test));
+        ShiftEncryptor se = new ShiftEncryptor(1);
+        System.out.println("Shift: " + se.encode(test));
+        NeighborEncryptor ne = new NeighborEncryptor();
+        System.out.println("Neighbor: " + ne.encode(test));
+        Encryptor ce = KeyTranslator.fromKey("RVT-NEI");
+        System.out.println("Complex: " + ce.encode(test));
+         */
+    }
+}

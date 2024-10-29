@@ -1,0 +1,46 @@
+package de.uniwue.gdp.crypto.basic;
+
+import de.uniwue.gdp.crypto.Encryptor;
+
+public class NeighborEncryptor implements Encryptor {
+    @Override
+    public String encode(String input) {
+        StringBuilder encoded = new StringBuilder();
+        for (int i = 0; i < input.length(); i++) {
+            char currentChar = input.charAt(i);
+            if (currentChar == ' ' || i == input.length() - 1) {
+                encoded.append(currentChar); // Letztes Zeichen oder Leerzeichen direkt hinzufügen
+            } else {
+                int shift = input.charAt(i + 1) - 'A'; // Nächster Buchstabe bestimmt die Verschiebung
+                char newChar = (char) (((currentChar - 'A' + shift) % 26) + 'A');
+                encoded.append(newChar);
+            }
+        }
+        return encoded.toString();
+    }
+
+    @Override
+    public String decode(String input) {
+        if (input.isEmpty() || input.length() == 1) return input; // Kurze Eingaben direkt zurückgeben
+
+        StringBuilder decoded = new StringBuilder(input); // Starte mit dem Originaltext
+
+        // Beginne mit dem letzten Buchstaben und bewege dich rückwärts
+        for (int i = input.length() - 2; i >= 0; i--) {
+            if (input.charAt(i) == ' ') {
+                continue; // Leerzeichen überspringen
+            }
+            int shift = (i + 1 < input.length() && input.charAt(i + 1) != ' ') ? decoded.charAt(i + 1) - 'A' : 0;
+            int originalCharIndex = decoded.charAt(i) - 'A' - shift;
+            if (originalCharIndex < 0) originalCharIndex += 26;
+            decoded.setCharAt(i, (char) (originalCharIndex + 'A'));
+        }
+
+        return decoded.toString();
+    }
+
+    @Override
+    public String key() {
+        return "NEI";
+    }
+}

@@ -1,0 +1,99 @@
+package de.uniwue.gdp.crypto.basic;
+
+import de.uniwue.gdp.crypto.Encryptor;
+
+public class NeighborEncryptor implements Encryptor {
+    @Override
+    public String encode(String input) {
+        /*String temp = "";
+        int firstChar;
+        int secondChar;
+        int sum;
+        ///Das letzte Char muss noch danach hinzugefügt werden
+        for(int i = 0; i<input.length()-1; i++){
+            if(input.charAt(i) == ' '){
+                temp += ' ';
+                continue;
+            }
+            firstChar = (int) input.charAt(i) -65;
+            secondChar = (int) input.charAt(i+1) - 65;
+            sum = firstChar + secondChar;
+            if(sum>26){
+                sum -= 26;
+            }
+            temp += (char) (sum + 65);
+        }
+        //letztes Char hinzufügen
+        temp += input.charAt(input.length()-1);
+        return temp;*/
+        StringBuilder temp = new StringBuilder();
+        for (int i = 0; i < input.length() - 1; i++) {
+            char currentChar = input.charAt(i);
+            if (currentChar == ' ') {
+                temp.append(' ');
+                continue;
+            }
+            int nextCharIndex = i + 1 < input.length() ? input.charAt(i + 1) - 'A' : 0;
+            int sum = ((currentChar - 'A') + nextCharIndex) % 26;
+            temp.append((char) (sum + 'A'));
+        }
+        temp.append(input.charAt(input.length() - 1));
+        return temp.toString();
+    }
+
+    @Override
+    public String decode(String input) {
+        /*String temp = "";
+        int firstChar;
+        int secondChar;
+        int sum;
+        int z = 0;
+        temp += input.charAt(input.length()-1);
+        for(int i = input.length()-2; i>=0;i--){
+            firstChar = (int) temp.charAt(z) -65;
+            secondChar = (int) input.charAt(i) - 65;
+            sum = secondChar - firstChar;
+            if(sum<0){
+                sum += 26;
+            }
+            z++;
+            temp += (char) (sum + 65);
+        }
+
+        String reverstemp = "";
+        for(int i = temp.length()-1; i>=0;i--)
+            reverstemp = reverstemp + temp.charAt(i);
+
+
+
+        return reverstemp;*/
+        if (input.length() <= 1) {
+            return input;
+        }
+
+        StringBuilder decoded = new StringBuilder(input.length());
+        decoded.append(input.charAt(input.length() - 1));
+
+        for (int i = input.length() - 2; i >= 0; i--) {
+            if (input.charAt(i) == ' ') {
+                decoded.insert(0, ' ');
+                continue;
+            }
+            int prevCharVal = decoded.charAt(0) - 'A';
+            int currCharVal = input.charAt(i) - 'A';
+            int originalVal = currCharVal - prevCharVal;
+
+            if (originalVal < 0) {
+                originalVal += 26;
+            }
+            decoded.insert(0, (char) (originalVal + 'A'));
+        }
+
+        return decoded.toString();
+    }
+
+    @Override
+    public String key() {
+        return "NEI";
+    }
+}
